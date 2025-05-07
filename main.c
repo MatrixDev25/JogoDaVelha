@@ -25,10 +25,10 @@ void printBoardWithOptions() {
   for (int i = 0; i<3 ; i ++){
   for (int j = 0; j<3; j++) {
   int pos = i * 3 + j + 1;
-  if (board[i][j] = ' ')
+  if (board[i][j] == ' ')
     printf(" %d ", pos);
   else
-    printf(" %c "), board[i][j];
+    printf(" %c ", board[i][j]);
   if (j < 2)
     printf("|");  
   }
@@ -48,14 +48,14 @@ void printBoardWithOptions() {
 int isWinner() {
   for (int i = 0; i < 3; i++) {
    // verificar se jogador ganhou na linha
-    if (Board[i][0] == currentPlayer && Board[i][1] == currentPlayer && Board[i][2] == currentPlayer)
+    if (board[i][0] == currentPlayer && board[i][1] == currentPlayer && board[i][2] == currentPlayer)
       return 1;
       // X | X | X
       // 4 | 5 | 6
       // 7 | 8 | 9
 
      // verificar se jogador ganhou na coluna
-    if (Board[i][0] == currentPlayer && Board[1][i] == currentPlayer && Board[2][i] == currentPlayer)
+    if (board[i][0] == currentPlayer && board[1][i] == currentPlayer && board[2][i] == currentPlayer)
       return 1;
       // 1 | 2 | X
       // 4 | 5 | X
@@ -85,14 +85,14 @@ int isWinner() {
 int isDraw(){
   for (int i = 0 ; i< 3; i++)
  for (int j =0 ; j< 3; j++)
-  if (board[i][j] = ' ')
+  if (board[i][j] == ' ')
     return 0;
   return 1;  
 }
 
 
 void switchPlayer() {
-  if (currentPlayer == 'X') {
+  if (currentPlayer == 'X') 
     currentPlayer = 'O';
   else if (currentPlayer == 'O')
     currentPlayer = 'X';
@@ -103,11 +103,9 @@ void switchPlayer() {
 
 void makeMove() {
  int pos;
-
   while(1){
   printf("Jogador %c, escolha uma posição (1-9):");
    scanf("%d", &pos);
-
     // 1 | 2 | 3
     // 4 | 5 | 6
     // 7 | 8 | 9
@@ -121,38 +119,42 @@ void makeMove() {
       int row = (pos - 1) / 3;
       int col = (pos - 1) % 3;
       if (board[row][col] == ' '){
-     board[row][col] = currentPlayer;
-        break;
-        else {
-         printf("Posição inválida. Tente de novo.\n");
-        }
-        
+        board[row][col] = currentPlayer;
+        break; 
+      } else {
+        printf("Posição já está ocupada.\n");
       }
-   } 
-  }   
- }
-}
+    } else {
+         printf("Posição inválida. Tente de novo.\n");
+    }  
+
+  }
+  }
+     
+
+
 
 int main() {
   
   initializedBoard();
 
   // jogo rodando
-  While(1) {
-   printBoardWitchOptions();
-   printf("jogador %c venceu!\n", currentPlayer);
-  break;
+  while(1) {
+   printBoardWithOptions();
+   makeMove(); 
+   if (isWinner()){
+     printBoardWithOptions();
+     printf("jogador %c venceu!\n", currentPlayer);
+      break;
   }
-  if (isDraw()){
-  
+  if (isDraw()){           
+    printBoardWithOptions();
+    printf("Deu Velha!\n");
+    break;
   }
-  printBoardWithOptions();
-  printf("empate!\n");
-  break;
 
-  swicthPlayer();
-  
-  printf("Hello world!\n");
+  switchPlayer();
+  }
 
  return 0;
 }
